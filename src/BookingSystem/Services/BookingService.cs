@@ -15,14 +15,23 @@ public class BookingService(IBookingRepository repository)
 
     public IReadOnlyList<Booking> GetActiveBookings()
     {
-        // This method has not been completed.
+        /* 
+            This method has not been completed.
+            ---------------------------------------------------
+            Lägg till att sortera listan först efter datum,
+            sedan efter starttid.
+        */
         return repository.GetAll();
     }
 
     public IReadOnlyList<Booking> Search(string searchTerm)
     {
-        //Fel #3 Sökning är skriftkänsligt och inte fullständig,
-        //Lägg till ..., StringComparison.OrdinalIgnoreCase
+        /*
+            Fel #3 Sökning är skriftkänsligt och inte fullständig,
+            Lägg till ..., StringComparison.OrdinalIgnoreCase
+            
+        */
+
         return repository.GetAll()
             .Where(booking =>
                 !booking.IsCancelled &&
