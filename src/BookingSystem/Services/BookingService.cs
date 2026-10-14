@@ -21,6 +21,8 @@ public class BookingService(IBookingRepository repository)
 
     public IReadOnlyList<Booking> Search(string searchTerm)
     {
+        //Fel #3 Sökning är skriftkänsligt och inte fullständig,
+        //Lägg till ..., StringComparison.OrdinalIgnoreCase
         return repository.GetAll()
             .Where(booking =>
                 !booking.IsCancelled &&
