@@ -58,6 +58,9 @@ public class BookingService(IBookingRepository repository)
         }
 
         booking.Id = repository.GetAll().Select(item => item.Id).DefaultIfEmpty(1000).Max() + 1;
+
+        //Behövs inte egentligen då standardvärde är false, men som extra säkerhet.
+        booking.IsCancelled = false;
         repository.Add(booking);
         repository.Save();
 
@@ -66,7 +69,7 @@ public class BookingService(IBookingRepository repository)
 
     public BookingResult Cancel(int bookingId)
     {
-        //Lägg till funktion
+        //Lägg till funktion Cancel
 
         var allBookings = repository.GetAll();
 
@@ -137,7 +140,6 @@ public class BookingService(IBookingRepository repository)
         {
             return BookingResult.Failure("The room is already booked during the selected time.");
         }
-        //Lägg till information om bookning är avbokad
 
         return BookingResult.Success("The booking is valid.");
     }
