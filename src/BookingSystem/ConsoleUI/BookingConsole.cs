@@ -71,9 +71,16 @@ public class BookingConsole(BookingService service)
         /*
             Kraschar när man skriver in bokstäver istället för siffror
             Lägg in seperat bool värde med int.TryParse, sedan if-sats med vilkor
+            Validering för mindre än 1 personer finns redan, tryparse räcker
         */
         Console.Write("Participants: ");
-        var participants = int.Parse(Console.ReadLine() ?? string.Empty);
+        var isValid = int.TryParse(Console.ReadLine(), out var participants);
+
+        if (!isValid)
+        {
+            Console.WriteLine("You must enter a valid number!");
+            return;
+        }
 
         var booking = new Booking
         {
