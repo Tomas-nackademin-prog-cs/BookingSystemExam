@@ -21,6 +21,8 @@ public class BookingService(IBookingRepository repository)
 
     public IReadOnlyList<Booking> Search(string searchTerm)
     {
+        //Fel #3 Sökning är skriftkänsligt och inte fullständig,
+        //Lägg till ..., StringComparison.OrdinalIgnoreCase
         return repository.GetAll()
             .Where(booking =>
                 !booking.IsCancelled &&
@@ -60,7 +62,11 @@ public class BookingService(IBookingRepository repository)
         {
             return BookingResult.Failure("The selected room does not exist.");
         }
-
+        /*
+            Problem #1 Felaktig Tidskontroll, kontrollerar bara att start tiden och sluttiden inte är detsamma
+            Kolla vilka med vilkor som behövs lägga till med, borde kontrollera att det inte sker innan ">="
+             < > || && "booking.StartTime >= booking.EndTime
+        */
         if (booking.StartTime == booking.EndTime)
         {
             return BookingResult.Failure("The start time must be earlier than the end time.");
@@ -75,7 +81,15 @@ public class BookingService(IBookingRepository repository)
         {
             return BookingResult.Failure($"{room.Name} has a maximum capacity of {room.Capacity}.");
         }
-
+        /*
+            Problem #2 Felaktig kontroll av överlappande bokningar,
+            Kontrollerar bara vissa överlappningar,
+            kontrollerar bokning som kommer in är samma eller senare än den som redan finns,
+            Kontrollerar bokning som kommer in är mindre än den som redan finns
+            Vill att mötet ska kunna börja samma tid som en annan slutar,
+            Räcker med att kontrollera nya bokning start tid < befintlig boknings slut tid?
+            Räcker med att kontrollera nya bokning slut tid > befintlig boknings slut tid?
+        */
         var hasOverlap = repository.GetAll().Any(existing =>
             !existing.IsCancelled &&
             existing.Date == booking.Date &&
