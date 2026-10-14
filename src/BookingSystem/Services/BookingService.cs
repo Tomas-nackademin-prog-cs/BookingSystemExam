@@ -23,7 +23,14 @@ public class BookingService(IBookingRepository repository)
             "There are currently no bookings."
             Lägg till kontroll om det finns data i repository?
         */
-        return repository.GetAll();
+
+        var sortetBookings = repository.GetAll()
+            .Where(booking => !booking.IsCancelled)
+            .OrderByDescending(booking => booking.Date)
+            .ThenBy(booking => booking.StartTime)
+            .ToList();
+
+        return sortetBookings;
     }
 
     public IReadOnlyList<Booking> Search(string searchTerm)
