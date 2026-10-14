@@ -62,7 +62,9 @@ public class BookingService(IBookingRepository repository)
         {
             return BookingResult.Failure("The selected room does not exist.");
         }
-
+        //Problem #1 Felaktig Tidskontroll, kontrollerar bara att start tiden och sluttiden inte är detsamma
+        //Kolla vilka med vilkor som behövs lägga till med, borde kontrollera att det inte sker innan ">="
+        // < > || && "booking.StartTime >= booking.EndTime
         if (booking.StartTime == booking.EndTime)
         {
             return BookingResult.Failure("The start time must be earlier than the end time.");
