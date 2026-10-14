@@ -15,14 +15,25 @@ public class BookingService(IBookingRepository repository)
 
     public IReadOnlyList<Booking> GetActiveBookings()
     {
-        // This method has not been completed.
+        /* 
+            This method has not been completed.
+            ---------------------------------------------------
+            Lägg till att sortera listan först efter datum,
+            sedan efter starttid. Sortera för om bokningar är avbokade eller ej.
+            "There are currently no bookings."
+            Lägg till kontroll om det finns data i repository?
+        */
         return repository.GetAll();
     }
 
     public IReadOnlyList<Booking> Search(string searchTerm)
     {
-        //Fel #3 Sökning är skriftkänsligt och inte fullständig,
-        //Lägg till ..., StringComparison.OrdinalIgnoreCase
+        /*
+            Fel #3 Sökning är skriftkänsligt och inte fullständig,
+            Lägg till ..., StringComparison.OrdinalIgnoreCase
+            
+        */
+
         return repository.GetAll()
             .Where(booking =>
                 !booking.IsCancelled &&
@@ -48,11 +59,13 @@ public class BookingService(IBookingRepository repository)
 
     public BookingResult Cancel(int bookingId)
     {
+        //Lägg till funktion
         throw new NotImplementedException();
     }
 
     private BookingResult Validate(Booking booking)
     {
+        
         if (string.IsNullOrWhiteSpace(booking.CustomerName))
         {
             return BookingResult.Failure("Customer name is required.");
@@ -101,6 +114,7 @@ public class BookingService(IBookingRepository repository)
         {
             return BookingResult.Failure("The room is already booked during the selected time.");
         }
+        //Lägg till information om bookning är avbokad
 
         return BookingResult.Success("The booking is valid.");
     }
