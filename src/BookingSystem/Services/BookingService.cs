@@ -23,7 +23,14 @@ public class BookingService(IBookingRepository repository)
             "There are currently no bookings."
             Lägg till kontroll om det finns data i repository?
         */
-        return repository.GetAll();
+
+        var sortetBookings = repository.GetAll()
+            .Where(booking => !booking.IsCancelled)
+            .OrderByDescending(booking => booking.Date)
+            .ThenBy(booking => booking.StartTime)
+            .ToList();
+
+        return sortetBookings;
     }
 
     public IReadOnlyList<Booking> Search(string searchTerm)
@@ -51,6 +58,9 @@ public class BookingService(IBookingRepository repository)
         }
 
         booking.Id = repository.GetAll().Select(item => item.Id).DefaultIfEmpty(1000).Max() + 1;
+
+        //Behövs inte egentligen då standardvärde är false, men som extra säkerhet.
+        booking.IsCancelled = false;
         repository.Add(booking);
         repository.Save();
 
@@ -59,8 +69,24 @@ public class BookingService(IBookingRepository repository)
 
     public BookingResult Cancel(int bookingId)
     {
-        //Lägg till funktion
-        throw new NotImplementedException();
+        //Lägg till funktion Cancel
+
+        var allBookings = repository.GetAll();
+
+        var booking = allBookings.FirstOrDefault(b => b.Id == bookingId);
+
+        if (booking is null)
+            return BookingResult.Failure("Booking not found.");
+
+        if (booking.IsCancelled)
+            return BookingResult.Failure($"Booking with id '{bookingId}' is already canceled.");
+
+        booking.IsCancelled = true;
+
+        repository.Save();
+
+        return BookingResult.Success($"Booking with id '{bookingId}' was cancel succesfully!");
+            
     }
 
     private BookingResult Validate(Booking booking)
@@ -114,7 +140,6 @@ public class BookingService(IBookingRepository repository)
         {
             return BookingResult.Failure("The room is already booked during the selected time.");
         }
-        //Lägg till information om bookning är avbokad
 
         return BookingResult.Success("The booking is valid.");
     }
