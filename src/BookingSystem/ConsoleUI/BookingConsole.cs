@@ -68,8 +68,10 @@ public class BookingConsole(BookingService service)
         var startTime = ReadTime("Start time (HH:mm): ");
         var endTime = ReadTime("End time (HH:mm): ");
 
-        //Kraschar när man skriver in bokstäver istället för siffror
-        //Lägg in seperat bool värde med int.TryParse, sedan if-sats med vilkor
+        /*
+            Kraschar när man skriver in bokstäver istället för siffror
+            Lägg in seperat bool värde med int.TryParse, sedan if-sats med vilkor
+        */
         Console.Write("Participants: ");
         var participants = int.Parse(Console.ReadLine() ?? string.Empty);
 

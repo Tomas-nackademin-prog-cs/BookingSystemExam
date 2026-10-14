@@ -19,7 +19,9 @@ public class BookingService(IBookingRepository repository)
             This method has not been completed.
             ---------------------------------------------------
             Lägg till att sortera listan först efter datum,
-            sedan efter starttid.
+            sedan efter starttid. Sortera för om bokningar är avbokade eller ej.
+            "There are currently no bookings."
+            Lägg till kontroll om det finns data i repository?
         */
         return repository.GetAll();
     }
