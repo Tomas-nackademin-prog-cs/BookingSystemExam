@@ -106,7 +106,7 @@ public class BookingService(IBookingRepository repository)
             Kolla vilka med vilkor som behövs lägga till med, borde kontrollera att det inte sker innan ">="
              < > || && "booking.StartTime >= booking.EndTime
         */
-        if (booking.StartTime == booking.EndTime)
+        if (booking.StartTime >= booking.EndTime)
         {
             return BookingResult.Failure("The start time must be earlier than the end time.");
         }
@@ -133,8 +133,8 @@ public class BookingService(IBookingRepository repository)
             !existing.IsCancelled &&
             existing.Date == booking.Date &&
             existing.RoomName.Equals(booking.RoomName, StringComparison.OrdinalIgnoreCase) &&
-            booking.StartTime >= existing.StartTime &&
-            booking.StartTime < existing.EndTime);
+            booking.StartTime < existing.EndTime &&
+            booking.EndTime > existing.StartTime);
 
         if (hasOverlap)
         {

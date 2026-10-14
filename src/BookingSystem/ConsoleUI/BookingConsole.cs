@@ -72,6 +72,7 @@ public class BookingConsole(BookingService service)
             Kraschar när man skriver in bokstäver istället för siffror
             Lägg in seperat bool värde med int.TryParse, sedan if-sats med vilkor
             Validering för mindre än 1 personer finns redan, tryparse räcker
+            Klar
         */
         Console.Write("Participants: ");
         var isValid = int.TryParse(Console.ReadLine(), out var participants);
