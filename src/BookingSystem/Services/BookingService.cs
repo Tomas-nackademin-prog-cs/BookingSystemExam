@@ -22,15 +22,16 @@ public class BookingService(IBookingRepository repository)
             sedan efter starttid. Sortera för om bokningar är avbokade eller ej.
             "There are currently no bookings."
             Lägg till kontroll om det finns data i repository?
+            Finns redan kontroll i BookingConsole
         */
 
-        var sortetBookings = repository.GetAll()
+        var sortedtBookings = repository.GetAll()
             .Where(booking => !booking.IsCancelled)
             .OrderBy(booking => booking.Date)
             .ThenBy(booking => booking.StartTime)
             .ToList();
 
-        return sortetBookings;
+        return sortedtBookings;
     }
 
     public IReadOnlyList<Booking> Search(string searchTerm)
@@ -76,7 +77,7 @@ public class BookingService(IBookingRepository repository)
         var booking = allBookings.FirstOrDefault(b => b.Id == bookingId);
 
         if (booking is null)
-            return BookingResult.Failure("Booking not found.");
+            return BookingResult.Failure($"Booking with id '{bookingId}' was not found.");
 
         if (booking.IsCancelled)
             return BookingResult.Failure($"Booking with id '{bookingId}' is already canceled.");
@@ -85,7 +86,7 @@ public class BookingService(IBookingRepository repository)
 
         repository.Save();
 
-        return BookingResult.Success($"Booking with id '{bookingId}' was cancel succesfully!");
+        return BookingResult.Success($"Booking with id '{bookingId}' was canceled succesfully!");
             
     }
 
