@@ -26,7 +26,7 @@ public class BookingService(IBookingRepository repository)
 
         var sortetBookings = repository.GetAll()
             .Where(booking => !booking.IsCancelled)
-            .OrderByDescending(booking => booking.Date)
+            .OrderBy(booking => booking.Date)
             .ThenBy(booking => booking.StartTime)
             .ToList();
 
